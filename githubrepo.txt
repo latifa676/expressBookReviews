@@ -1,0 +1,4 @@
+curl -s https://api.github.com/repos/latifa676/expressBookReviews | jq '.parent.full_name'
+
+Output:
+"ibm-developer-skills-network/expressBookReviews"
