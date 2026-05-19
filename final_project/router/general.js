@@ -57,53 +57,89 @@ public_users.get('/', async function (req, res) {
 
 
 // Get book details based on ISBN
-public_users.get('/isbn/:isbn', function (req, res) {
+public_users.get('/isbn/:isbn', async function (req, res) {
 
-  const isbn = req.params.isbn;
-
-  return res.status(200).json(books[isbn]);
-
-});
+    try {
+  
+      const isbn = req.params.isbn;
+  
+      const getBook = new Promise((resolve, reject) => {
+        resolve(books[isbn]);
+      });
+  
+      const data = await getBook;
+  
+      const response = await axios.get('http://localhost:5000/');
+  
+      return res.status(200).json(data);
+  
+    } catch (error) {
+      return res.status(500).json({ message: "Error fetching book by ISBN" });
+    }
+  
+  });
 
 
 // Get book details based on author
-public_users.get('/author/:author', function (req, res) {
+public_users.get('/author/:author', async function (req, res) {
 
-  const author = req.params.author;
-
-  let filteredBooks = {};
-
-  Object.keys(books).forEach((key) => {
-
-    if(books[key].author === author){
-      filteredBooks[key] = books[key];
+    try {
+  
+      const author = req.params.author;
+  
+      const getBooksByAuthor = new Promise((resolve, reject) => {
+  
+        let result = {};
+  
+        Object.keys(books).forEach((key) => {
+          if (books[key].author === author) {
+            result[key] = books[key];
+          }
+        });
+  
+        resolve(result);
+      });
+  
+      const data = await getBooksByAuthor;
+  
+      return res.status(200).json(data);
+  
+    } catch (error) {
+      return res.status(500).json({ message: "Error fetching books by author" });
     }
-
+  
   });
-
-  return res.status(200).json(filteredBooks);
-
-});
 
 
 // Get all books based on title
-public_users.get('/title/:title', function (req, res) {
+public_users.get('/title/:title', async function (req, res) {
 
-  const title = req.params.title;
-
-  let filteredBooks = {};
-
-  Object.keys(books).forEach((key) => {
-
-    if(books[key].title === title){
-      filteredBooks[key] = books[key];
+    try {
+  
+      const title = req.params.title;
+  
+      const getBooksByTitle = new Promise((resolve, reject) => {
+  
+        let result = {};
+  
+        Object.keys(books).forEach((key) => {
+          if (books[key].title === title) {
+            result[key] = books[key];
+          }
+        });
+  
+        resolve(result);
+      });
+  
+      const data = await getBooksByTitle;
+  
+      return res.status(200).json(data);
+  
+    } catch (error) {
+      return res.status(500).json({ message: "Error fetching books by title" });
     }
-
+  
   });
-
-  return res.status(200).json(filteredBooks);
-
-});
 
 
 // Get book review
