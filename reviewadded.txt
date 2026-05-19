@@ -1,3 +1,4 @@
-curl -b cookies.txt -X PUT "http://localhost:5000/customer/auth/review/1?review=GreatBook"
+curl -b cookies.txt -X PUT "http://localhost:5000/review/1?review=GreatBook"
+
 Output:
-{"message":"Review added/updated successfully",}
+{"message":"Review added/updated successfully"}
